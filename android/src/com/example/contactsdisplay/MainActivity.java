@@ -58,9 +58,14 @@ public class MainActivity extends QtActivity{
 
         if(cursor.moveToFirst()){
             do {
-
                 name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
                 number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+
+                Contacts contact = new Contacts();
+                contact.contactName = name;
+                contact.contactNumber = number;
+
+                System.out.println(contact.contactNumber);
 
                 contacts.add(name);
                 contacts.add(number);
