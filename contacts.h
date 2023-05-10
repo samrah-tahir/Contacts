@@ -8,10 +8,10 @@
 class Contacts: public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(std::vector<QString> contactList READ rContactList WRITE setContactList NOTIFY contactListChanged)
+    //Q_PROPERTY(std::vector<QString> contactList READ rContactList WRITE setContactList NOTIFY contactListChanged)
     //Q_PROPERTY(std::vector<Contact> contactListObj READ rContactListObj WRITE setContactListObj NOTIFY contactListObjChanged)
     Q_PROPERTY(std::vector<QVariantMap> contactListMap READ rContactListMap WRITE setContactListMap NOTIFY contactListMapChanged)
-    //Q_PROPERTY(bool isNightMode READ isNightMode WRITE setIsNightMode NOTIFY isNightModeChanged)
+
 
 public:
     void randomFunc();

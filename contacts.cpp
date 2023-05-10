@@ -31,11 +31,7 @@ JNIEXPORT void JNICALL Java_com_example_contactsdisplay_MainActivity_displayCont
     QJsonDocument doc = QJsonDocument::fromJson(cStr);
     QJsonArray arr = doc.array();
 
-    std::vector<Contact> contacts2Vector;
 
-
-
-    std::vector<QString> contactsVector;
     std::vector<QVariantMap> contactsMapVector;
 
     for(int  i = 0; i < arr.count(); ++i){
@@ -49,8 +45,6 @@ JNIEXPORT void JNICALL Java_com_example_contactsdisplay_MainActivity_displayCont
 
         contactsMapVector.push_back(contactMap);
 
-        contactsVector.push_back(jsonObj["name"].toString());
-        contactsVector.push_back(jsonObj["number"].toString());
         //qDebug() << contact.contactName;
     }
 
@@ -59,8 +53,6 @@ JNIEXPORT void JNICALL Java_com_example_contactsdisplay_MainActivity_displayCont
 
     Contacts* contactItems = reinterpret_cast<Contacts*>(ptr);
 
-    //contactItems->setContactListObj(contacts2Vector);
-    contactItems->setContactList(contactsVector);
     contactItems->setContactListMap(contactsMapVector);
 
     qDebug() << contactItems->rContactListMap()[0].value("contactName");
