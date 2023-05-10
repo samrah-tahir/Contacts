@@ -14,10 +14,53 @@
 #include <QJsonObject>
 
 
-Contacts::Contacts(QObject *parent) : QObject{parent}
+Contacts *contact = nullptr;
+
+Contacts::Contacts(QObject *parent) : QAbstractListModel(parent)
 {
     QJniObject javaClass = QNativeInterface::QAndroidApplication::context();
     javaClass.callMethod<void>("test","(J)V",(long long)(Contacts*)this);
+}
+
+int Contacts::rowCount(const QModelIndex &parent) const{
+    if(parent.isValid())
+        return 0;
+
+    return contactsList.size();
+}
+
+QVariant Contacts::data(const QModelIndex &index, int role) const{
+    if(!index.isValid())
+        return QVariant();
+    if(role == NameRole){
+        return contactsList[index.row()].value("contactName");
+    }
+    else if(role == PhoneNumRole){
+        return contactsList[index.row()].value("contactNumber");
+    }
+
+    return QVariant();
+}
+
+QHash <int, QByteArray> Contacts::roleNames() const {
+    static QHash<int, QByteArray> mapping {
+
+        {NameRole, "contactName"},
+        {PhoneNumRole, "contactNumber"},
+        };
+    return mapping;
+}
+
+void Contacts::addContact(QVariantMap contact){
+
+//    for (const QVariantMap &contact : contacts) {
+//        contactsList.append(contact);
+
+//    }
+    qDebug() << contact;
+    //contactsList.append(contact);
+
+
 }
 
 extern "C" {
@@ -32,7 +75,7 @@ JNIEXPORT void JNICALL Java_com_example_contactsdisplay_MainActivity_displayCont
     QJsonArray arr = doc.array();
 
 
-    std::vector<QVariantMap> contactsMapVector;
+    std::list<QVariantMap> contactsMapList;
 
     for(int  i = 0; i < arr.count(); ++i){
         QJsonObject jsonObj = arr.at(i).toObject();
@@ -40,22 +83,27 @@ JNIEXPORT void JNICALL Java_com_example_contactsdisplay_MainActivity_displayCont
         //contacts2Vector.push_back(contact);
         QVariantMap contactMap;
 
+
         contactMap.insert("contactName", jsonObj["name"].toString());
         contactMap.insert("contactNumber", jsonObj["number"].toString());
 
-        contactsMapVector.push_back(contactMap);
 
+        contactsMapList.push_back(contactMap);
+
+        qDebug() << contactMap;
+        //contact->addContact(contactMap);
         //qDebug() << contact.contactName;
     }
 
 
 
 
+
     Contacts* contactItems = reinterpret_cast<Contacts*>(ptr);
+    //contact->addContact(contactsMapList);
+    //contactItems->setContactListMap(contactsMapList);
 
-    contactItems->setContactListMap(contactsMapVector);
-
-    qDebug() << contactItems->rContactListMap()[0].value("contactName");
+    //qDebug() << contactItems->rContactListMap()[0].value("contactName");
 }
 
 }

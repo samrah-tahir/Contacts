@@ -4,39 +4,42 @@
 #include <QObject>
 #include <QVariant>
 #include <qqml.h>
+#include <QAbstractListModel>
 
-
-class Contacts: public QObject
+class Contacts: public QAbstractListModel
 {
     Q_OBJECT
-    //Q_PROPERTY(std::vector<QString> contactList READ rContactList WRITE setContactList NOTIFY contactListChanged)
-    //Q_PROPERTY(std::vector<Contact> contactListObj READ rContactListObj WRITE setContactListObj NOTIFY contactListObjChanged)
-    Q_PROPERTY(std::vector<QVariantMap> contactListMap READ rContactListMap WRITE setContactListMap NOTIFY contactListMapChanged)
+
+   // Q_PROPERTY(std::vector<QVariantMap> contactListMap READ rContactListMap WRITE setContactListMap NOTIFY contactListMapChanged)
 
 
 public:
-    void randomFunc();
-    explicit Contacts(QObject *parent = nullptr);
-    //std::vector<QString> rContactList() const;
-    //void setContactList(const std::vector<QString> &newContactList);
-    //int isEqual(const std::vector<Contact> &newContactListObj);
-    //void test();
 
-//    std::vector<Contact> rContactListObj() const;
-//    void setContactListObj(const std::vector<Contact> &newContactListObj);
+    explicit Contacts(QObject *parent = nullptr);
+
+    enum{
+        NameRole = Qt::UserRole,
+        PhoneNumRole
+    };
+
+    int rowCount(const QModelIndex &parent = QModelIndex() ) const override;
+
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+
+    QHash<int, QByteArray> roleNames() const override;
 
     std::vector<QVariantMap> rContactListMap() const;
     void setContactListMap(const std::vector<QVariantMap> &newContactListMap);
 
+    void addContact(QVariantMap contact);
+    QList<QVariantMap> contactsList;
+
 signals:
-    //void contactListChanged();
-    //void contactListObjChanged();
 
     void contactListMapChanged();
 
 private:
-    //std::vector<QString> m_contactList;
-    //std::vector<Contact> m_contactListObj;
+
     std::vector<QVariantMap> m_contactListMap;
 };
 

@@ -41,8 +41,6 @@ qt_add_resources(appContactsDisplay "android"
     PREFIX /
     FILES
         android/src/com/example/contactsdisplay/MainActivity.java
-        android/src/com/example/contactsdisplay/Contacts.java
-        android/src/com/example/contactsdisplay/Contact.java
         android/AndroidManifest.xml
         android/build.gradle
         android/res/values/libs.xml
