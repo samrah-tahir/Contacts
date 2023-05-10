@@ -19,7 +19,7 @@ Window {
 
             MouseArea {
                 anchors.fill: parent
-                onClicked: console.log(contactsid.contactList)
+                onClicked: console.log(contactsid.contactListMap[0].contactName)
             }
 
             ListView {
@@ -28,15 +28,25 @@ Window {
 
                     focus: true
 
-                    model: contactsid.contactList
+                    model: contactsid.contactListMap
                     delegate: Rectangle {
                         width: parent.width
                         height: 40
                         color: "white"
 
-                        Text {
-                            anchors.fill: parent
-                            text: modelData
+
+                            Text {
+                                id: contactName
+                                width: parent
+                                height: 20
+                                text: modelData.contactName
+                            }
+                            Text {
+                                anchors.top: contactName.bottom
+                                width: parent
+                                height: 20
+                                text: modelData.contactNumber
+                            }
                         }
                     }
 
@@ -45,6 +55,6 @@ Window {
 
         }
 
-}
+
 
 
