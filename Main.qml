@@ -13,14 +13,14 @@ Window {
         id: contactsid
     }
 
-//    Rectangle {
-//            anchors.fill: parent
-//            color: "pink"
+    Rectangle {
+            anchors.fill: parent
+            color: "pink"
 
-//            MouseArea {
-//                anchors.fill: parent
-//                onClicked: console.log(contactsid.contactListMap[0].contactName)
-//            }
+            MouseArea {
+                anchors.fill: parent
+                onClicked: console.log(contactsid.data(0,"contactName"))
+            }
 
 //            ListView {
 //                    anchors.fill: parent
@@ -50,11 +50,11 @@ Window {
 //                        }
 //                    }
 
-//                    clip: true
-//                }
+                    clip: true
+                }
 
-//        }
+        }
 
 
-}
+
 

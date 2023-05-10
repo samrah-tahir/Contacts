@@ -57,9 +57,9 @@ void Contacts::addContact(QVariantMap contact){
 //        contactsList.append(contact);
 
 //    }
-    qDebug() << contact;
-    //contactsList.append(contact);
 
+    contactsList.append(contact);
+    qDebug() << contactsList.at(0);
 
 }
 
