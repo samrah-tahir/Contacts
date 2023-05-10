@@ -12,7 +12,7 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QJsonObject>
-#include "contact.h"
+
 
 Contacts::Contacts(QObject *parent) : QObject{parent}
 {
@@ -36,7 +36,7 @@ JNIEXPORT void JNICALL Java_com_example_contactsdisplay_MainActivity_displayCont
 
     for(int  i = 0; i < arr.count(); ++i){
         QJsonObject jsonObj = arr.at(i).toObject();
-        Contact contact(jsonObj["name"].toString(), jsonObj["number"].toString());
+        //Contact contact(jsonObj["name"].toString(), jsonObj["number"].toString());
         //contacts2Vector.push_back(contact);
         QVariantMap contactMap;
 
@@ -60,18 +60,6 @@ JNIEXPORT void JNICALL Java_com_example_contactsdisplay_MainActivity_displayCont
 
 }
 
-std::vector<QString> Contacts::rContactList() const
-{
-    return m_contactList;
-}
-
-void Contacts::setContactList(const std::vector<QString> &newContactList)
-{
-    if (m_contactList == newContactList)
-        return;
-    m_contactList = newContactList;
-    emit contactListChanged();
-}
 
 
 //ignored for now

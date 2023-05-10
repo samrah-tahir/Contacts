@@ -4,7 +4,8 @@
 #include <QObject>
 #include <QVariant>
 #include <qqml.h>
-#include "contact.h"
+
+
 class Contacts: public QObject
 {
     Q_OBJECT
@@ -16,9 +17,9 @@ class Contacts: public QObject
 public:
     void randomFunc();
     explicit Contacts(QObject *parent = nullptr);
-    std::vector<QString> rContactList() const;
-    void setContactList(const std::vector<QString> &newContactList);
-    int isEqual(const std::vector<Contact> &newContactListObj);
+    //std::vector<QString> rContactList() const;
+    //void setContactList(const std::vector<QString> &newContactList);
+    //int isEqual(const std::vector<Contact> &newContactListObj);
     //void test();
 
 //    std::vector<Contact> rContactListObj() const;
@@ -28,13 +29,13 @@ public:
     void setContactListMap(const std::vector<QVariantMap> &newContactListMap);
 
 signals:
-    void contactListChanged();
+    //void contactListChanged();
     //void contactListObjChanged();
 
     void contactListMapChanged();
 
 private:
-    std::vector<QString> m_contactList;
+    //std::vector<QString> m_contactList;
     //std::vector<Contact> m_contactListObj;
     std::vector<QVariantMap> m_contactListMap;
 };
