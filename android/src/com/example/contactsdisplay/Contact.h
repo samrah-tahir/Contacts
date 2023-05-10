@@ -10,10 +10,10 @@ extern "C" {
 /*
  * Class:     Contact
  * Method:    displayContacts
- * Signature: (Ljava/util/ArrayList;)V
+ * Signature: (Ljava/lang/String;J)V
  */
 JNIEXPORT void JNICALL Java_Contact_displayContacts
-  (JNIEnv *, jclass, jobject);
+  (JNIEnv *, jobject, jstring, jlong);
 
 #ifdef __cplusplus
 }

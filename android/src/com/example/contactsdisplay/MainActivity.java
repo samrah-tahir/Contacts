@@ -1,6 +1,9 @@
 package com.example.contactsdisplay;
 
 import java.util.ArrayList;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONException;
 
 import org.qtproject.qt.android.bindings.QtActivity;
 
@@ -15,7 +18,7 @@ import android.provider.*;
 
 public class MainActivity extends QtActivity{
 
-    public native void displayContacts(ArrayList<String> contacts, long pointer);
+    public native void displayContacts(String jsonContacts, long pointer);
 
     public long pointer;
 
@@ -50,30 +53,30 @@ public class MainActivity extends QtActivity{
 
         Cursor cursor = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,PROJECTION,null,null,null);
 
-        ArrayList<String> contacts = new ArrayList<String>();
+        JSONArray contactsArray = new JSONArray();
+
 
         String name;
         String number;
 
+        try{
+            if(cursor.moveToFirst()){
+                do {
+                    name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+                    number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 
-        if(cursor.moveToFirst()){
-            do {
-                name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-                number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                    JSONObject contact = new JSONObject();
+                    contact.put("name", name);
+                    contact.put("number", number);
 
-                Contacts contact = new Contacts();
-                contact.contactName = name;
-                contact.contactNumber = number;
+                    contactsArray.put(contact);
 
-                System.out.println(contact.contactNumber);
-
-                contacts.add(name);
-                contacts.add(number);
-
-            }while(cursor.moveToNext());
+                }while(cursor.moveToNext());
+            }
         }
+        catch(JSONException ex){}
 
-        displayContacts(contacts, pointer);
+        displayContacts(contactsArray.toString(), pointer);
     }
 
     @Override

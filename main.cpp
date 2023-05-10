@@ -17,6 +17,7 @@ int main(int argc, char *argv[])
 
     qmlRegisterType<Contacts>("Contactspackage",1,0,"Contacts");
 
+
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreationFailed,
         &app, []() { QCoreApplication::exit(-1); },
         Qt::QueuedConnection);

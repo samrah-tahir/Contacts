@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Window
 import Contactspackage
 
+
 Window {
     width: 640
     height: 480
@@ -12,10 +13,15 @@ Window {
         id: contactsid
     }
 
-
     Rectangle {
             anchors.fill: parent
             color: "pink"
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: console.log(contactsid.contactList)
+            }
+
             ListView {
                     anchors.fill: parent
                     anchors.margins: 20

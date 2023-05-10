@@ -9,7 +9,10 @@
 #include <QVariant>
 #include <QObject>
 #include <QGuiApplication>
-
+#include <QJsonDocument>
+#include <QJsonArray>
+#include <QJsonObject>
+#include "contact.h"
 
 Contacts::Contacts(QObject *parent) : QObject{parent}
 {
@@ -20,29 +23,34 @@ Contacts::Contacts(QObject *parent) : QObject{parent}
 extern "C" {
 
 JNIEXPORT void JNICALL Java_com_example_contactsdisplay_MainActivity_displayContacts
-    (JNIEnv *env, jclass, jobject arraylistObj, jlong ptr){
-    jclass cList = env->FindClass("java/util/List");
-    jmethodID mSize = env->GetMethodID(cList, "size", "()I");
-    jmethodID mGet = env->GetMethodID(cList, "get", "(I)Ljava/lang/Object;");
+    (JNIEnv *env, jobject obj, jstring jsonContactsStr, jlong ptr){
 
-    // get the size of the list
-    jint size = env->CallIntMethod(arraylistObj, mSize);
 
+    const char *cStr = env->GetStringUTFChars(jsonContactsStr, 0);
+
+    QJsonDocument doc = QJsonDocument::fromJson(cStr);
+    QJsonArray arr = doc.array();
+
+    //std::vector<Contact> contactsVector;
     std::vector<QString> contactsVector;
 
-    for(jint i=0;i<size;i++) {
-        jstring strObj = (jstring)env->CallObjectMethod(arraylistObj, mGet, i);
-        const char * chr = env->GetStringUTFChars(strObj, NULL);
-        contactsVector.push_back(chr);
-        //qDebug() << chr;
-        env->ReleaseStringUTFChars(strObj, chr);
+    for(int  i = 0; i < arr.count(); ++i){
+        QJsonObject jsonObj = arr.at(i).toObject();
+        //Contact contact(jsonObj["name"].toString(), jsonObj["number"].toString());
+        //contactsVector.push_back(contact);
+        contactsVector.push_back(jsonObj["name"].toString());
+        contactsVector.push_back(jsonObj["number"].toString());
+        //qDebug() << contact.contactName;
     }
+
+
+
 
     Contacts* contactItems = reinterpret_cast<Contacts*>(ptr);
 
+    //contactItems->setContactListObj(contactsVector);
     contactItems->setContactList(contactsVector);
 
-    //qDebug() << size;
 }
 
 }
@@ -60,3 +68,37 @@ void Contacts::setContactList(const std::vector<QString> &newContactList)
     emit contactListChanged();
 }
 
+
+//ignored for now
+std::vector<Contact> Contacts::rContactListObj() const
+{
+    return m_contactListObj;
+}
+
+
+
+void Contacts::setContactListObj(const std::vector<Contact> &newContactListObj)
+{
+//    if (isEqual(newContactListObj) == true)
+//        return;
+    m_contactListObj = newContactListObj;
+    //qDebug() << m_contactListObj[0].contactName;
+    emit contactListObjChanged();
+}
+
+int Contacts::isEqual(const std::vector<Contact> &newContactListObj){
+    int isEqualObj = true;
+
+    for(int i = 0; i < m_contactListObj.size(); i++){
+
+        if(m_contactListObj[i].contactName == newContactListObj[i].contactName && m_contactListObj[i].contactNumber == newContactListObj[i].contactNumber){
+            isEqualObj = true;
+        }
+        else{
+            isEqualObj = false;
+            return isEqualObj;
+        }
+
+    }
+    return isEqualObj;
+}
