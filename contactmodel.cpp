@@ -14,8 +14,7 @@
 #include <QJsonObject>
 
 
-ContactModel *contact = nullptr;
-//QList<QVariantMap> contactsList;
+
 
 ContactModel::ContactModel(QObject *parent) : QAbstractListModel(parent)
 {
@@ -86,11 +85,6 @@ JNIEXPORT void JNICALL Java_com_example_contactsdisplay_MainActivity_displayCont
 
 
     }
-
-
-
-
-
 
     ContactModel* contactItems = reinterpret_cast<ContactModel*>(ptr);
     contactItems->addContact(contactsMapList);
