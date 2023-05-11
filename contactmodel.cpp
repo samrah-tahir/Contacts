@@ -138,7 +138,6 @@ JNIEXPORT void JNICALL Java_com_example_contactsdisplay_MainActivity_getUpdatedC
     std::list<QVariantMap> contactsMapList;
     for(int  i = 0; i < arr.count(); ++i){
         QJsonObject jsonObj = arr.at(i).toObject();
-
         QVariantMap contactMap;
         contactMap.insert("contactName", QVariant(jsonObj["name"].toString()));
         contactMap.insert("contactNumber",  QVariant(jsonObj["number"].toString()));
