@@ -16,7 +16,7 @@ qt_add_qml_module(appContactsDisplay
     URI ContactsDisplay
     VERSION 1.0
     QML_FILES Main.qml
-    SOURCES contacts.h contacts.cpp
+    SOURCES contactmodel.h contactmodel.cpp
 )
 
 set_target_properties(appContactsDisplay PROPERTIES

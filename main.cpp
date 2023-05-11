@@ -5,7 +5,7 @@
 #include <string>
 #include <QQmlContext>
 #include <QVariant>
-#include "contacts.h"
+#include "contactmodel.h"
 
 int main(int argc, char *argv[])
 {
@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     const QUrl url(u"qrc:/ContactsDisplay/Main.qml"_qs);
 
-    qmlRegisterType<Contacts>("Contactspackage",1,0,"Contacts");
+    qmlRegisterType<ContactModel>("Contactspackage",1,0,"ContactModel");
 
 
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreationFailed,

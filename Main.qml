@@ -28,7 +28,7 @@ Window {
 
                     focus: true
 
-                    model: Contacts{}
+                    model: ContactModel{}
                     delegate: Rectangle {
                         width: parent.width
                         height: 40
