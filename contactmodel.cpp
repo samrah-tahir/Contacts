@@ -15,7 +15,7 @@
 
 
 ContactModel *contact = nullptr;
-QList<QVariantMap> contactsList;
+//QList<QVariantMap> contactsList;
 
 ContactModel::ContactModel(QObject *parent) : QAbstractListModel(parent)
 {
@@ -34,6 +34,7 @@ QVariant ContactModel::data(const QModelIndex &index, int role) const{
     if(!index.isValid())
         return QVariant();
     if(role == NameRole){
+        qDebug() << contactsList[index.row()].value("contactName");
         return contactsList[index.row()].value("contactName");
     }
     else if(role == PhoneNumRole){
@@ -55,7 +56,7 @@ void ContactModel::addContact(std::list<QVariantMap> contacts){
     for (const QVariantMap &contact : contacts) {
         contactsList.push_back(contact);
     }
-
+    qDebug() << contactsList.at(0);
 }
 
 extern "C" {
@@ -88,11 +89,11 @@ JNIEXPORT void JNICALL Java_com_example_contactsdisplay_MainActivity_displayCont
 
 
 
-    contact->addContact(contactsMapList);
+
 
 
     ContactModel* contactItems = reinterpret_cast<ContactModel*>(ptr);
-
+    contactItems->addContact(contactsMapList);
 }
 
 }

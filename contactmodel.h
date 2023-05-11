@@ -12,7 +12,7 @@ class ContactModel: public QAbstractListModel
 
    // Q_PROPERTY(std::vector<QVariantMap> contactListMap READ rContactListMap WRITE setContactListMap NOTIFY contactListMapChanged)
 
-
+ QList<QVariantMap> contactsList;
 public:
 
     explicit ContactModel(QObject *parent = nullptr);
@@ -29,7 +29,7 @@ public:
     QHash<int, QByteArray> roleNames() const override;
 
     void addContact(std::list<QVariantMap> contacts);
-    //QList<QVariantMap> contacts;
+
 
 };
 
