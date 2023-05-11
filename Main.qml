@@ -9,9 +9,9 @@ Window {
     visible: true
     title: qsTr("Contact Book")
 
-    Contacts{
-        id: contactsid
-    }
+//    Contacts{
+//        id: contactsid
+//    }
 
     Rectangle {
             anchors.fill: parent
@@ -22,33 +22,33 @@ Window {
                 onClicked: console.log(contactsid.data(0,"contactName"))
             }
 
-//            ListView {
-//                    anchors.fill: parent
-//                    anchors.margins: 20
+            ListView {
+                    anchors.fill: parent
+                    anchors.margins: 20
 
-//                    focus: true
+                    focus: true
 
-//                    model: contactsid.contactListMap
-//                    delegate: Rectangle {
-//                        width: parent.width
-//                        height: 40
-//                        color: "white"
+                    model: Contacts{}
+                    delegate: Rectangle {
+                        width: parent.width
+                        height: 40
+                        color: "white"
 
 
-//                            Text {
-//                                id: contactName
-//                                width: parent
-//                                height: 20
-//                                text: modelData.contactName
-//                            }
-//                            Text {
-//                                anchors.top: contactName.bottom
-//                                width: parent
-//                                height: 20
-//                                text: modelData.contactNumber
-//                            }
-//                        }
-//                    }
+                            Text {
+                                id: contactName
+                                width: parent
+                                height: 20
+                                text: model.contactName
+                            }
+                            Text {
+                                anchors.top: contactName.bottom
+                                width: parent
+                                height: 20
+                                text: model.contactNumber
+                            }
+                        }
+                    }
 
                     clip: true
                 }

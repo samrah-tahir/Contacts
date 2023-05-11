@@ -28,19 +28,9 @@ public:
 
     QHash<int, QByteArray> roleNames() const override;
 
-    std::vector<QVariantMap> rContactListMap() const;
-    void setContactListMap(const std::vector<QVariantMap> &newContactListMap);
+    void addContact(std::list<QVariantMap> contacts);
+    //QList<QVariantMap> contactsList;
 
-    void addContact(QVariantMap contact);
-    QList<QVariantMap> contactsList;
-
-signals:
-
-    void contactListMapChanged();
-
-private:
-
-    std::vector<QVariantMap> m_contactListMap;
 };
 
 
