@@ -86,7 +86,6 @@ public class MainActivity extends QtActivity{
     @Override
        public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
             readContacts();
            }
        }
