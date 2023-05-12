@@ -45,6 +45,13 @@ public class MainActivity extends QtActivity{
 
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        getContentResolver().unregisterContentObserver(contactObserver);
+    }
+
     public void readContacts(){
         ContentResolver contentResolver = getContentResolver();
         String[] PROJECTION = new String[]{
