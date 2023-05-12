@@ -23,6 +23,8 @@ public class MainActivity extends QtActivity{
     public native void getUpdatedContacts(String jsonContacts, long pointer);
 
     public long pointer;
+    String lastUpdateTime = "0";
+
     ContactObserver contactObserver = new ContactObserver(null);
 
     @Override
@@ -46,13 +48,17 @@ public class MainActivity extends QtActivity{
     public void readContacts(){
         ContentResolver contentResolver = getContentResolver();
         String[] PROJECTION = new String[]{
+                        ContactsContract.Contacts.CONTACT_LAST_UPDATED_TIMESTAMP,
                         ContactsContract.CommonDataKinds.Phone.CONTACT_ID,
                         ContactsContract.Contacts.DISPLAY_NAME,
                         ContactsContract.CommonDataKinds.Phone.NUMBER
                 };
-
+        final String contactsOrderBy = ContactsContract.Contacts.CONTACT_LAST_UPDATED_TIMESTAMP + " DESC";
+        final String contactWhere = ContactsContract.Contacts.CONTACT_LAST_UPDATED_TIMESTAMP + ">?";
+        final String[] contactArguments = { lastUpdateTime };
         contentResolver.registerContentObserver(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, true, contactObserver);
-        Cursor cursor = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,PROJECTION,null,null,null);
+        Cursor cursor = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,PROJECTION,contactWhere,contactArguments,contactsOrderBy);
+
 
         JSONArray contactsArray = new JSONArray();
 
@@ -61,13 +67,19 @@ public class MainActivity extends QtActivity{
         String number;
         String id;
 
+
         try{
             if(cursor.moveToFirst()){
                 do {
                     name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
                     number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+
                     id = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID));
 
+                    if(cursor.isFirst()){
+                        lastUpdateTime = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.CONTACT_LAST_UPDATED_TIMESTAMP));
+
+                    }
                     JSONObject contact = new JSONObject();
                     contact.put("id", id);
                     contact.put("name", name);
@@ -93,13 +105,19 @@ public class MainActivity extends QtActivity{
 
    public void contactChanged(){
        ContentResolver contentResolver = getContentResolver();
+
        String[] PROJECTION = new String[]{
+                       ContactsContract.Contacts.CONTACT_LAST_UPDATED_TIMESTAMP,
                        ContactsContract.CommonDataKinds.Phone.CONTACT_ID,
                        ContactsContract.Contacts.DISPLAY_NAME,
                        ContactsContract.CommonDataKinds.Phone.NUMBER
                };
 
-       Cursor cursor = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,PROJECTION,null,null,null);
+       final String contactsOrderBy = ContactsContract.Contacts.CONTACT_LAST_UPDATED_TIMESTAMP + " DESC";
+       final String contactWhere = ContactsContract.Contacts.CONTACT_LAST_UPDATED_TIMESTAMP + ">?";
+       final String[] contactArguments = { lastUpdateTime };
+
+       Cursor cursor = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,PROJECTION,contactWhere,contactArguments,contactsOrderBy);
 
        JSONArray contactsArray = new JSONArray();
 
@@ -115,6 +133,13 @@ public class MainActivity extends QtActivity{
                    name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
                    number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                    id = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID));
+                   String time = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.CONTACT_LAST_UPDATED_TIMESTAMP));
+
+
+                   if(cursor.isFirst()){
+                       lastUpdateTime = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.CONTACT_LAST_UPDATED_TIMESTAMP));
+                   }
+
 
                    JSONObject contact = new JSONObject();
                    contact.put("id", id);
@@ -125,10 +150,10 @@ public class MainActivity extends QtActivity{
 
                }while(cursor.moveToNext());
            }
+
        }
        catch(JSONException ex){}
 
-       //System.out.println(contactsArray.toString());
        getUpdatedContacts(contactsArray.toString(), pointer);
 
    }

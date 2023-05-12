@@ -40,7 +40,7 @@ QVariant ContactModel::data(const QModelIndex &index, int role) const{
 bool ContactModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
     if(data(index, role) != value){
-        qDebug() << value;
+        //qDebug() << value;
         if(role == NameRole){
             contactsList[index.row()]["contactName"] = value;
         }
@@ -70,17 +70,17 @@ void ContactModel::addContact(std::list<QVariantMap> contacts, int updated){
     else if (updated == 1) {
         int i = 0;
 
-        for(QVariantMap &contact: contacts){
-            auto it = std::find(contactsList.begin(), contactsList.end(), contact);
+        for(QVariantMap &contact: contactsList){
+            for(QVariantMap &newContact: contacts){
+                if(contact.value("contactID") == newContact.value("contactID")){
+                   const auto contactIndex = i;
+                   QModelIndex modelIndex = index(contactIndex, 0, QModelIndex());
+                   setData(modelIndex, newContact.value("contactName"), NameRole);
+                   setData(modelIndex, newContact.value("contactNumber"), PhoneNumRole);
+                }
+            }
 
-           if(it != contactsList.end()){
-                i++;
-           } else {
-               qDebug() << "not  found";
-                const auto contactIndex = i;
-               QModelIndex modelIndex = index(contactIndex, 0, QModelIndex());
-               setData(modelIndex, contact.value("contactName"), NameRole);
-               qDebug()<< "The index is " << i;
+            i++;
 
            }
 
@@ -88,7 +88,7 @@ void ContactModel::addContact(std::list<QVariantMap> contacts, int updated){
 
     }
 
-}
+
 
 extern "C" {
 
@@ -120,6 +120,8 @@ JNIEXPORT void JNICALL Java_com_example_contactsdisplay_MainActivity_displayCont
 
     ContactModel* contactItems = reinterpret_cast<ContactModel*>(ptr);
     contactItems->addContact(contactsMapList, 0);
+
+    //qDebug() << contactsMapList;
 }
 
 }
@@ -151,7 +153,7 @@ JNIEXPORT void JNICALL Java_com_example_contactsdisplay_MainActivity_getUpdatedC
     ContactModel* contactItems = reinterpret_cast<ContactModel*>(ptr);
     contactItems->addContact(contactsMapList, 1);
 
-
+    //qDebug() << contactsMapList;
 }
 
 }
