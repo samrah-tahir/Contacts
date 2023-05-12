@@ -86,6 +86,7 @@ void ContactModel::addContact(std::list<QVariantMap> contacts, int updated){
 
            }
 
+           //if no such contact found in the contactsList then its a new contact
         if(!found){
             qDebug() << "new contact added";
             beginInsertRows(QModelIndex(), i, i);
@@ -131,7 +132,6 @@ JNIEXPORT void JNICALL Java_com_example_contactsdisplay_MainActivity_displayCont
     ContactModel* contactItems = reinterpret_cast<ContactModel*>(ptr);
     contactItems->addContact(contactsMapList, 0);
 
-    //qDebug() << contactsMapList;
 }
 
 }
@@ -163,7 +163,6 @@ JNIEXPORT void JNICALL Java_com_example_contactsdisplay_MainActivity_getUpdatedC
     ContactModel* contactItems = reinterpret_cast<ContactModel*>(ptr);
     contactItems->addContact(contactsMapList, 1);
 
-    //qDebug() << contactsMapList;
 }
 
 }
