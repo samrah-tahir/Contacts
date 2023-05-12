@@ -68,7 +68,7 @@ void ContactModel::addContact(std::list<QVariantMap> contacts, int updated){
         }
     }
     else if (updated == 1) {
-
+        //add updated contact
         bool found = false;
 
         for(QVariantMap &contact: contactsList){
