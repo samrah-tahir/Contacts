@@ -137,6 +137,8 @@ public class MainActivity extends QtActivity{
 
 
                    if(cursor.isFirst()){
+
+                       //last time the contact db was updated
                        lastUpdateTime = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.CONTACT_LAST_UPDATED_TIMESTAMP));
                    }
 
