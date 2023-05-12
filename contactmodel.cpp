@@ -61,18 +61,20 @@ QHash <int, QByteArray> ContactModel::roleNames() const {
 }
 
 void ContactModel::addContact(std::list<QVariantMap> contacts, int updated){
-
+    int i = 0;
     if(updated == 0){
         for (const QVariantMap &contact : contacts) {
             contactsList.push_back(contact);
         }
     }
     else if (updated == 1) {
-        int i = 0;
+
+        bool found = false;
 
         for(QVariantMap &contact: contactsList){
             for(QVariantMap &newContact: contacts){
                 if(contact.value("contactID") == newContact.value("contactID")){
+                   found = true;
                    const auto contactIndex = i;
                    QModelIndex modelIndex = index(contactIndex, 0, QModelIndex());
                    setData(modelIndex, newContact.value("contactName"), NameRole);
@@ -83,6 +85,14 @@ void ContactModel::addContact(std::list<QVariantMap> contacts, int updated){
             i++;
 
            }
+
+        if(!found){
+            qDebug() << "new contact added";
+            beginInsertRows(QModelIndex(), i, i);
+            for(QVariantMap &newContact: contacts)
+                contactsList.append(newContact);
+            endInsertRows();
+        }
 
         }
 
