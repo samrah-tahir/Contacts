@@ -3,6 +3,7 @@ package com.example.contactsdisplay;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONException;
+import java.util.ArrayList;
 
 import org.qtproject.qt.android.bindings.QtActivity;
 
@@ -26,6 +27,7 @@ public class MainActivity extends QtActivity{
     public long pointer;
     String lastUpdateTime = "0";
     int numOfContacts = 0;
+    int contactListEmpty = 1;
 
     ContactObserver contactObserver = new ContactObserver(null);
 
@@ -37,11 +39,16 @@ public class MainActivity extends QtActivity{
     public void test(long ptr){
           pointer = ptr;
 
-          if (checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED){
-               requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, 100);
+          if (checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED ||
+              checkSelfPermission(Manifest.permission.WRITE_CONTACTS) != PackageManager.PERMISSION_GRANTED
+          ){
+               requestPermissions(new String[]{Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS}, 100);
            }
           else {
-                   readContacts();
+                if(contactListEmpty == 1 )
+                    writeContacts();
+                else
+                    readContacts();
           }
 
 
@@ -90,6 +97,7 @@ public class MainActivity extends QtActivity{
 
                     if(cursor.isFirst()){
                         lastUpdateTime = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.CONTACT_LAST_UPDATED_TIMESTAMP));
+                        System.out.println(name);
 
                     }
                     JSONObject contact = new JSONObject();
@@ -106,13 +114,51 @@ public class MainActivity extends QtActivity{
         }
         catch(JSONException ex){}
         cursor.close();
+        System.out.println(contactsArray.toString());
         displayContacts(contactsArray.toString(), pointer);
+    }
+
+    public void writeContacts(){
+        int i;
+        for( i = 0; i < 2; i++){
+            ArrayList<ContentProviderOperation> operations = new ArrayList<>();
+            operations.add(ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
+            .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
+            .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
+            .build());
+
+            operations.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+            .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+            .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
+            .withValue(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, "Te"+i+"t").build());
+
+
+            operations.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+            .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+            .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+            .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, "054"+i+"685966884").build());
+            try {
+                getContentResolver().applyBatch(ContactsContract.AUTHORITY, operations);
+                System.out.println("contactsAdded");
+                System.out.println(operations.size());
+            }
+            catch(Exception ex){
+                System.out.println(ex);
+            }
+        }
+
+
+        contactListEmpty = 0;
+        readContacts();
     }
 
     @Override
        public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            readContacts();
+                readContacts();
+           }
+           else if(grantResults[1] == PackageManager.PERMISSION_GRANTED){
+                writeContacts();
            }
        }
 
@@ -155,6 +201,7 @@ public class MainActivity extends QtActivity{
 
                            //last time the contact db was updated
                            lastUpdateTime = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.CONTACT_LAST_UPDATED_TIMESTAMP));
+
                        }
 
 

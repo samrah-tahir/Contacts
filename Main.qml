@@ -25,33 +25,35 @@ Window {
 
             ListView {
                     anchors.fill: parent
-                    anchors.margins: 20
-
                     focus: true
-
+                    anchors.margins: 20
                     model: ContactModel{}
+                    spacing: 3
+
                     delegate: Rectangle {
                         width: root.width
+
                         height: 40
                         color: "white"
-
+                        anchors.margins: 5
 
                             Text {
                                 id: contactName
-                                width: parent
+                                width: parent.width - 5
                                 height: 20
                                 text: model.contactName
                             }
                             Text {
                                 anchors.top: contactName.bottom
-                                width: parent
+                                width: parent.width - 5
                                 height: 20
                                 text: model.contactNumber
                             }
                         }
+                        clip: true
                     }
 
-                    clip: true
+
                 }
 
         }
