@@ -8,7 +8,6 @@
 
 class ContactModel: public QAbstractListModel
 {
-
     QList<QVariantMap> contactsList;
 
 public:
@@ -30,6 +29,7 @@ public:
 
     void addContact(std::list<QVariantMap> contacts, int);
 
+    void removeContact(QString contact_id);
 
 };
 

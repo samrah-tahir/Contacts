@@ -99,6 +99,19 @@ void ContactModel::addContact(std::list<QVariantMap> contacts, int updated){
 
     }
 
+void ContactModel::removeContact(QString contact_id){
+
+
+        for(int i = 0; i < contactsList.size(); i++){
+            if(contactsList.at(i)["contactID"] == contact_id){
+
+                beginRemoveRows(QModelIndex(), i, i);
+                contactsList.removeAt(i);
+                endRemoveRows();
+            }
+        }
+
+}
 
 
 extern "C" {
@@ -165,4 +178,27 @@ JNIEXPORT void JNICALL Java_com_example_contactsdisplay_MainActivity_getUpdatedC
 
 }
 
+
+extern "C" {
+
+JNIEXPORT void JNICALL Java_com_example_contactsdisplay_MainActivity_removeContact
+    (JNIEnv *env, jobject, jstring deletedContactJson, jlong ptr){
+
+    const char *contactID = env->GetStringUTFChars(deletedContactJson, 0);
+
+    QJsonDocument doc = QJsonDocument::fromJson(contactID);
+    QJsonArray arr = doc.array();
+
+    ContactModel* contactItems = reinterpret_cast<ContactModel*>(ptr);
+
+    for(int  i = 0; i < arr.count(); ++i){
+        QJsonObject jsonObj = arr.at(i).toObject();
+        QVariantMap contactMap;
+        contactMap.insert("contactID", QVariant(jsonObj["contact_id"].toString()));
+        contactItems->removeContact(contactMap["contactID"].toString());
+
+    }
+}
+
+}
 }

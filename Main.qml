@@ -4,6 +4,7 @@ import Contactspackage
 
 
 Window {
+    id: root
     width: 640
     height: 480
     visible: true
@@ -30,7 +31,7 @@ Window {
 
                     model: ContactModel{}
                     delegate: Rectangle {
-                        width: parent.width
+                        width: root.width
                         height: 40
                         color: "white"
 
