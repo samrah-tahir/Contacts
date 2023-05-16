@@ -17,6 +17,11 @@ import android.database.Cursor;
 import android.database.ContentObserver;
 import android.provider.*;
 import android.os.Handler;
+import android.net.Uri;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class MainActivity extends QtActivity{
 
@@ -45,10 +50,14 @@ public class MainActivity extends QtActivity{
                requestPermissions(new String[]{Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS}, 100);
            }
           else {
-                if(contactListEmpty == 1 )
-                    writeContacts();
-                else
+//                if(contactListEmpty == 1 )
+//                    writeContacts();
+
+//                else
                     readContacts();
+
+
+                //deleteContacts();
           }
 
 
@@ -120,7 +129,7 @@ public class MainActivity extends QtActivity{
 
     public void writeContacts(){
         int i;
-        for( i = 0; i < 2; i++){
+        for( i = 0; i < 1000; i++){
             ArrayList<ContentProviderOperation> operations = new ArrayList<>();
             operations.add(ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
             .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
@@ -150,6 +159,24 @@ public class MainActivity extends QtActivity{
 
         contactListEmpty = 0;
         readContacts();
+    }
+
+
+    public void deleteContacts(){
+
+        ContentResolver contentResolver = getContentResolver();
+        Cursor cursor = contentResolver.query(ContactsContract.RawContacts.CONTENT_URI, null, null, null, null);
+
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                long rawContactId = cursor.getLong(cursor.getColumnIndex(ContactsContract.RawContacts._ID));
+
+                Uri rawContactUri = ContentUris.withAppendedId(ContactsContract.RawContacts.CONTENT_URI, rawContactId);
+                contentResolver.delete(rawContactUri, null, null);
+            }
+            cursor.close();
+        }
+
     }
 
     @Override
