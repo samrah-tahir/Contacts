@@ -30,6 +30,17 @@ Window {
                     model: ContactModel{}
                     spacing: 3
                     clip: true
+                    header: Rectangle {
+                        width: root.width;
+                        height: 30
+
+                        Text {
+                            anchors.fill: parent
+                            text: "Contacts"
+                            font.bold: true
+                        }
+                    }
+
                     delegate: Rectangle {
                         width: root.width
 
