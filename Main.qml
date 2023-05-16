@@ -13,16 +13,11 @@ Window {
 
     ListView {
             anchors {fill: parent; margins: 20}
-
             spacing: 3
             clip: true
-
             model: ContactModel{}
-
             header: headerDelegate
-
             delegate: contactsDelegate
-
             section.property: "contactName"
             section.delegate: sectionDelegate
             section.criteria: ViewSection.FirstCharacter
@@ -33,14 +28,12 @@ Window {
 
         Rectangle {
             width: root.width; height: 30
-
             Text {
                 anchors.fill: parent
                 text: "Contacts"
                 font.bold: true
             }
         }
-
     }
 
     Component {
@@ -48,7 +41,6 @@ Window {
 
         Rectangle {
             width: ListView.view.width; height: 40
-
             Text {
                 id: contactName
                 text: model.contactName
@@ -71,7 +63,6 @@ Window {
 
                 width: ListView.view ? ListView.view.width : 0
                 height: 20
-
                 color: "white"
 
                 Text {
