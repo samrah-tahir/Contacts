@@ -77,7 +77,7 @@ Window {
                 Text {
                     text: sectionWrapper.section
                     color: "grey"
-                    font.pixelSize: 12
+                    font.pointSize: 12
                 }
             }
         }
