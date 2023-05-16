@@ -50,14 +50,12 @@ public class MainActivity extends QtActivity{
                requestPermissions(new String[]{Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS}, 100);
            }
           else {
-//                if(contactListEmpty == 1 )
-//                    writeContacts();
+                if(contactListEmpty == 1 )
+                    writeContacts();
 
-//                else
+                else
                     readContacts();
 
-
-                //deleteContacts();
           }
 
 
@@ -158,24 +156,6 @@ public class MainActivity extends QtActivity{
 
         contactListEmpty = 0;
         readContacts();
-    }
-
-
-    public void deleteContacts(){
-
-        ContentResolver contentResolver = getContentResolver();
-        Cursor cursor = contentResolver.query(ContactsContract.RawContacts.CONTENT_URI, null, null, null, null);
-
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
-                long rawContactId = cursor.getLong(cursor.getColumnIndex(ContactsContract.RawContacts._ID));
-
-                Uri rawContactUri = ContentUris.withAppendedId(ContactsContract.RawContacts.CONTENT_URI, rawContactId);
-                contentResolver.delete(rawContactUri, null, null);
-            }
-            cursor.close();
-        }
-
     }
 
     @Override
