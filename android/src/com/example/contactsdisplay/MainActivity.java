@@ -104,7 +104,7 @@ public class MainActivity extends QtActivity{
 
                     if(cursor.isFirst()){
                         lastUpdateTime = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.CONTACT_LAST_UPDATED_TIMESTAMP));
-                        System.out.println(name);
+
 
                     }
                     JSONObject contact = new JSONObject();
@@ -121,7 +121,7 @@ public class MainActivity extends QtActivity{
         }
         catch(JSONException ex){}
         cursor.close();
-        System.out.println(contactsArray.toString());
+
         displayContacts(contactsArray.toString(), pointer);
     }
 
@@ -146,11 +146,10 @@ public class MainActivity extends QtActivity{
             .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, "054"+i+"685966884").build());
             try {
                 getContentResolver().applyBatch(ContactsContract.AUTHORITY, operations);
-                System.out.println("contactsAdded");
-                System.out.println(operations.size());
+
             }
             catch(Exception ex){
-                System.out.println(ex);
+
             }
         }
 
