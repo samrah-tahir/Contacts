@@ -147,7 +147,6 @@ public class MainActivity extends QtActivity{
             }
         }
 
-
         contactListEmpty = 0;
         readContacts();
     }
