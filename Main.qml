@@ -16,7 +16,7 @@ Window {
 
     Rectangle {
             anchors.fill: parent
-            color: "pink"
+            color: "#f0f1f2"
 
             MouseArea {
                 anchors.fill: parent
@@ -29,7 +29,7 @@ Window {
                     anchors.margins: 20
                     model: ContactModel{}
                     spacing: 3
-
+                    clip: true
                     delegate: Rectangle {
                         width: root.width
 
@@ -48,10 +48,35 @@ Window {
                                 width: parent.width - 5
                                 height: 20
                                 text: model.contactNumber
+                                font.pointSize: 12
                             }
                         }
-                        clip: true
+
+                        section.property: "contactName"
+                        section.delegate: sectionDelegate
+                        section.criteria: ViewSection.FirstCharacter
                     }
+
+            Component {
+                    id: sectionDelegate
+
+                    Rectangle {
+                        id: sectionWrapper
+                        required property string section
+                        width: ListView.view ? ListView.view.width : 0
+                        height: 20
+                        color: "white"
+
+                        Text {
+                            text: sectionWrapper.section
+                            color: "grey"
+                            font.pixelSize: 12
+                        }
+
+
+
+                    }
+                }
 
 
                 }

@@ -60,6 +60,7 @@ QHash <int, QByteArray> ContactModel::roleNames() const {
     return roleNames;
 }
 
+
 void ContactModel::addContact(std::list<QVariantMap> contacts, int updated){
     int i = 0;
     if(updated == 0){
@@ -90,14 +91,51 @@ void ContactModel::addContact(std::list<QVariantMap> contacts, int updated){
         if(!found){
             qDebug() << "new contact added";
             beginInsertRows(QModelIndex(), i, i);
-            for(QVariantMap &newContact: contacts)
+            for(QVariantMap &newContact: contacts){
                 contactsList.append(newContact);
+                //std::sort(contactsList.begin(),contactsList.end(), compare_map);
+
+            }
             endInsertRows();
+
+            beginResetModel();
+            std::sort(contactsList.begin(),contactsList.end(), compare_map);
+            endResetModel();
+
+            qDebug() << contactsList;
         }
 
         }
 
     }
+
+bool compare_maps(const QVariantMap &a, const QVariantMap &b){
+
+        QString key = "contactName";
+
+        if(a.contains(key) && b.contains(key)){
+        QString aValue = a[key].toString();
+        QString bValue = b[key].toString();
+
+        return aValue < bValue;
+        }
+
+        return false;
+}
+
+bool ContactModel::compare_map(const QVariantMap &a, const QVariantMap &b){
+
+        QString key = "contactName";
+
+        if(a.contains(key) && b.contains(key)){
+        QString aValue = a[key].toString();
+        QString bValue = b[key].toString();
+
+        return aValue < bValue;
+        }
+
+        return false;
+}
 
 void ContactModel::removeContact(QString contact_id){
 
@@ -112,6 +150,8 @@ void ContactModel::removeContact(QString contact_id){
         }
 
 }
+
+
 
 
 extern "C" {
@@ -142,8 +182,13 @@ JNIEXPORT void JNICALL Java_com_example_contactsdisplay_MainActivity_displayCont
 
     }
 
+
+
+    contactsMapList.sort(compare_maps);
+
     ContactModel* contactItems = reinterpret_cast<ContactModel*>(ptr);
     contactItems->addContact(contactsMapList, 0);
+
 
 }
 

@@ -31,6 +31,8 @@ public:
 
     void removeContact(QString contact_id);
 
+    static bool compare_map(const QVariantMap &a, const QVariantMap &b);
+
 };
 
 
