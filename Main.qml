@@ -13,7 +13,7 @@ Window {
 
     ListView {
             anchors {fill: parent; margins: 20}
-            spacing: 3
+            spacing: 2
             clip: true
             model: ContactModel{}
             header: Rectangle {
