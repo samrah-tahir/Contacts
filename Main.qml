@@ -89,7 +89,6 @@ Window {
         width: parent.width; height: parent.height/2
         visible: false
         color: "#f7f8fa"
-
         anchors {
             bottom: parent.bottom
             left: parent.left
@@ -103,7 +102,6 @@ Window {
                 text: name ? name : "N/A"
 
             }
-
             Text {
                 id: detailNumber
                 text: number ? number : "N/A"
