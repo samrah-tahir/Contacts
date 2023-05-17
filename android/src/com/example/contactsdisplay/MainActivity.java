@@ -168,6 +168,18 @@ public class MainActivity extends QtActivity{
        }
 
 
+   public int deleteContact(int contact_id){
+
+       ContentResolver contentResolver = getContentResolver();
+       final String contactWhere = ContactsContract.RawContacts.CONTACT_ID + "=?";
+       final String[] contactArguments = { String.valueOf(contact_id) };
+       int deletedRow = contentResolver.delete(ContactsContract.RawContacts.CONTENT_URI, contactWhere, contactArguments);
+       System.out.println(deletedRow);
+
+       return deletedRow;
+   }
+
+
    public void contactChanged(){
        ContentResolver contentResolver = getContentResolver();
 

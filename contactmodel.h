@@ -8,6 +8,7 @@
 
 class ContactModel: public QAbstractListModel
 {
+    Q_OBJECT
     QList<QVariantMap> contactsList;
 
 public:
@@ -33,6 +34,7 @@ public:
 
     static bool compare_map(const QVariantMap &a, const QVariantMap &b);
 
+    Q_INVOKABLE bool removeRows(int row, int count, const QModelIndex &parent=QModelIndex()) override;
 };
 
 

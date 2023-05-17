@@ -9,11 +9,13 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QJsonObject>
+#include <string>
 
 
+QJniObject javaClass = QNativeInterface::QAndroidApplication::context();
 ContactModel::ContactModel(QObject *parent) : QAbstractListModel(parent)
 {
-    QJniObject javaClass = QNativeInterface::QAndroidApplication::context();
+
     javaClass.callMethod<void>("test","(J)V",(long long)(ContactModel*)this);
 }
 
@@ -151,8 +153,25 @@ void ContactModel::removeContact(QString contact_id){
 
 }
 
+bool ContactModel::removeRows(int row, int count, const QModelIndex &parent){
 
+        jint isSuccess = javaClass.callMethod<int>("deleteContact","(I)I", contactsList.at(row)["contactID"].toInt());
 
+        if(!isSuccess){ //if contact successfully removed from android contactDB
+            return false;
+        }
+
+        if((row + count) < rowCount()){
+            beginRemoveRows(parent, row, row);
+            contactsList.removeAt(row);
+            endRemoveRows();
+        }
+        else {
+            return false;
+        }
+
+        return true;
+}
 
 extern "C" {
 

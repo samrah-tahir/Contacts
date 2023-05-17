@@ -11,11 +11,14 @@ Window {
     title: qsTr("Contact Book")
     color: "#f0f1f2"
 
+    ContactModel{
+        id:contactmodel
+    }
     ListView {
             anchors {fill: parent; margins: 20}
             spacing: 2
             clip: true
-            model: ContactModel{}
+            model: contactmodel
             header: Rectangle {
                 width: root.width; height: 30
                 Text {
@@ -25,6 +28,9 @@ Window {
                 }
             }
             delegate: Rectangle {
+                id: contact
+               // required property int index
+
                 width: ListView.view.width; height: 40
                 Text {
                     id: contactName
@@ -34,6 +40,21 @@ Window {
                     anchors.top: contactName.bottom
                     text: model.contactNumber
                     font.pointSize: 12
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    drag {
+                        target: contact
+                        axis: Drag.XAxis
+                        minimumX: -292
+                        maximumX: 0
+                    }
+                    onPositionChanged: if(drag.active) {
+                                           if(contact.x == -292){
+                                              contactmodel.removeRows(index, 1);
+                                            }
+                                       }
                 }
             }
 
