@@ -16,47 +16,29 @@ Window {
             spacing: 3
             clip: true
             model: ContactModel{}
-            header: headerDelegate
-            delegate: contactsDelegate
+            header: Rectangle {
+                width: root.width; height: 30
+                Text {
+                    anchors.fill: parent
+                    text: "Contacts"
+                    font.bold: true
+                }
+            }
+            delegate: Rectangle {
+                width: ListView.view.width; height: 40
+                Text {
+                    id: contactName
+                    text: model.contactName
+                }
+                Text {
+                    anchors.top: contactName.bottom
+                    text: model.contactNumber
+                    font.pointSize: 12
+                }
+            }
+
             section.property: "contactName"
-            section.delegate: sectionDelegate
-            section.criteria: ViewSection.FirstCharacter
-    }
-
-    Component {
-        id: headerDelegate
-
-        Rectangle {
-            width: root.width; height: 30
-            Text {
-                anchors.fill: parent
-                text: "Contacts"
-                font.bold: true
-            }
-        }
-    }
-
-    Component {
-        id: contactsDelegate
-
-        Rectangle {
-            width: ListView.view.width; height: 40
-            Text {
-                id: contactName
-                text: model.contactName
-            }
-            Text {
-                anchors.top: contactName.bottom
-                text: model.contactNumber
-                font.pointSize: 12
-            }
-        }
-    }
-
-    Component {
-            id: sectionDelegate
-
-            Rectangle {
+            section.delegate: Rectangle {
                 id: sectionWrapper
 
                 required property string section
@@ -71,7 +53,8 @@ Window {
                     font.pointSize: 12
                 }
             }
-        }
+            section.criteria: ViewSection.FirstCharacter
+    }
 }
 
 
