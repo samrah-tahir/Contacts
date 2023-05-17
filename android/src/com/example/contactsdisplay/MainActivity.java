@@ -174,7 +174,6 @@ public class MainActivity extends QtActivity{
        final String contactWhere = ContactsContract.RawContacts.CONTACT_ID + "=?";
        final String[] contactArguments = { String.valueOf(contact_id) };
        int deletedRow = contentResolver.delete(ContactsContract.RawContacts.CONTENT_URI, contactWhere, contactArguments);
-       System.out.println(deletedRow);
 
        return deletedRow;
    }
