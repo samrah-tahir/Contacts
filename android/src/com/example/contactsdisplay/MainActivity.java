@@ -50,10 +50,10 @@ public class MainActivity extends QtActivity{
                requestPermissions(new String[]{Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS}, 100);
            }
           else {
-                if(contactListEmpty == 1 )
-                    writeContacts();
+//                if(contactListEmpty == 1 )
+//                    writeContacts();
 
-                else
+//                else
                     readContacts();
 
           }

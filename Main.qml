@@ -11,6 +11,9 @@ Window {
     title: qsTr("Contact Book")
     color: "#f0f1f2"
 
+    property string name
+    property string number
+
     ContactModel{
         id:contactmodel
     }
@@ -50,6 +53,10 @@ Window {
                         minimumX: -292
                         maximumX: 0
                     }
+                    onClicked: {
+                        detailsCard.visible ? detailsCard.visible = false : detailsCard.visible = true;
+                        name = model.contactName; number = model.contactNumber
+                    }
                     onPositionChanged: if(drag.active) {
                                            if(contact.x == -292){
                                               contactmodel.removeRows(index, 1);
@@ -75,6 +82,33 @@ Window {
                 }
             }
             section.criteria: ViewSection.FirstCharacter
+    }
+
+    Rectangle {
+        id: detailsCard
+        width: parent.width; height: parent.height/2
+        visible: false
+        color: "#f7f8fa"
+
+        anchors {
+            bottom: parent.bottom
+            left: parent.left
+            right: parent.right
+        }
+
+        Row {
+            spacing: 20
+            Text {
+                id: detailName
+                text: name ? name : "N/A"
+
+            }
+
+            Text {
+                id: detailNumber
+                text: number ? number : "N/A"
+            }
+        }
     }
 }
 

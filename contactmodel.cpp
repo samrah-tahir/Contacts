@@ -103,8 +103,6 @@ void ContactModel::addContact(std::list<QVariantMap> contacts, int updated){
             beginResetModel();
             std::sort(contactsList.begin(),contactsList.end(), compare_map);
             endResetModel();
-
-            qDebug() << contactsList;
         }
 
         }
@@ -161,7 +159,7 @@ bool ContactModel::removeRows(int row, int count, const QModelIndex &parent){
             return false;
         }
 
-        if((row + count) < rowCount()){
+        if(row < rowCount()){
             beginRemoveRows(parent, row, row);
             contactsList.removeAt(row);
             endRemoveRows();
