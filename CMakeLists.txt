@@ -15,7 +15,7 @@ qt_add_executable(appContactsDisplay
 qt_add_qml_module(appContactsDisplay
     URI ContactsDisplay
     VERSION 1.0
-    QML_FILES Main.qml
+    QML_FILES Main.qml Delegate.qml
     SOURCES contactmodel.h contactmodel.cpp
 )
 
