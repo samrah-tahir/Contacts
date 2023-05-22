@@ -7,7 +7,7 @@ Package {
 
     Rectangle { Package.name: 'list'
         id: listDelegate
-        width: root.width; height: 40; anchors.margins: 5
+        width: root.width; height: 40
         color: "white"
         MouseArea {
             anchors.fill: listDelegate
@@ -45,29 +45,24 @@ Package {
             },
             State {
                 name: 'inDetail'; when: root.state == 'inDetail'
-                ParentChange {target: contactNumberLabel; parent: detailDelegate; width: parent.width; height: 40}
-                ParentChange {target: contactNameText; parent: detailDelegate; width: parent.width;height:  40}
-                ParentChange {target: contactAvatar; parent: detailDelegate; width: parent.width; height:  250}
+                ParentChange {target: contactNumberLabel; parent: detailDelegate; width: parent.width; height: 40; x:0;y: 200}
+                ParentChange {target: contactNameText; parent: detailDelegate; width: parent.width;height: 40; x:0; y: 140}
+                ParentChange {target: contactAvatar; parent: detailDelegate; width: parent.width; height: 140; x: 0; y:0}
 
                 PropertyChanges {target: backBtn; visible: true}
-                PropertyChanges {target: contactAvatar; width: parent.width; height: 140; radius: 0; x: 0; y:0}
-                PropertyChanges {target: contactNameText; width: parent.width;height: 40; x:0; y: 140; color: "white"}
-                PropertyChanges {target: contactNumberLabel; anchors.topMargin: 20;width: parent.width; height: 40; x:0;y: 200; color: "white"}
+                PropertyChanges {target: contactAvatar; radius: 0}
+                PropertyChanges {target: contactNameText;  color: "white"}
+                PropertyChanges {target: contactNumberLabel; anchors.topMargin: 20; color: "white"}
                 AnchorChanges {target: contactNameText; anchors.top: contactAvatar.bottom; anchors.left: parent.left}
                 AnchorChanges {target: contactNumberLabel; anchors.top: contactNameText.bottom; anchors.left: parent.left}
             }
-
         ]
 
         transitions: [
                     Transition {
                         from: 'inList'; to: 'inDetail'
                         ParentAnimation {
-                            NumberAnimation {
-                                properties: 'x,y,width,height,opacity'
-                                duration: 300
-                                easing.type: Easing.OutQuart
-                            }
+                            NumberAnimation {properties: 'x,y,width,height,opacity'; duration: 300; easing.type: Easing.OutQuart}
                         }
                     }
                 ]

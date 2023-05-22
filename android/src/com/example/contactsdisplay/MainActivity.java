@@ -7,6 +7,9 @@ import java.util.ArrayList;
 
 import org.qtproject.qt.android.bindings.QtActivity;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.os.Bundle;
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -89,6 +92,7 @@ public class MainActivity extends QtActivity{
         String name;
         String number;
         String id;
+        String photoURI;
 
 
         try{
