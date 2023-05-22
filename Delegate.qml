@@ -7,7 +7,7 @@ Package {
 
     Rectangle { Package.name: 'list'
         id: listDelegate
-        width: root.width; height: 40
+        width: root.width; height: 40; anchors.margins: 5
         color: "white"
         MouseArea {
             anchors.fill: listDelegate
@@ -96,18 +96,17 @@ Package {
 
         Rectangle {
             id: contactAvatar
-            width: 30
-            height: 30
-            color:  "grey"
+            x: 3
+            width: 30; height: 30
+            color:  Qt.rgba(Math.random(), Math.random(), Math.random(), 1)
             radius: 50
             Rectangle{
                 id: backBtn
-                width: 80
-                height: 20
+                color: "transparent"
+                width: 80; height: 20
                 Text {
                     y: 0; x: 0
                     text: "<< BACK"
-                    color: "black"
                 }
                 visible: false
                 MouseArea {
@@ -123,26 +122,20 @@ Package {
                 anchors.centerIn: parent
                 color: "white"
             }
-
         }
 
         Rectangle {
             id: contactNameText
-            width: root.width - 30
-            height: 16
+            width: root.width - 33; height: 16;
             anchors.left: contactAvatar.right
             Text {text: contactName}
         }
 
         Rectangle {
             id: contactNumberLabel
-            width: root.width - 30
-            height: 16
+            width: root.width - 33; height: 16
             anchors {top: contactNameText.bottom; left: contactAvatar.right}
-            Text {
-                text: contactNumber
-                font.pointSize: 12
-            }
+            Text {text: contactNumber; font.pointSize: 12}
         }
 }
 
