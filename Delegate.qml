@@ -64,7 +64,7 @@ Package {
                 PropertyChanges {
                     target: contactAvatar
                     width: parent.width
-                    height:  150
+                    height: 140
                     radius: 0
                     x: 0; y:0
                 }
@@ -72,16 +72,16 @@ Package {
                     target: contactNameText
                     width: parent.width
                     height: 40
-                    x: 0; y: 150
-                    color: "#f0f1f2"
+                    x:0;y: 150
+                    color: "white"
                 }
                 PropertyChanges {
                     target: contactNumberLabel
                     anchors.topMargin: 20
                     width: parent.width
                     height: 40
-                    x: 0; y: 210
-                    color: "#f0f1f2"
+                    x:0;y: 210
+                    color: "white"
                 }
                 AnchorChanges {
                     target: contactNameText
@@ -116,6 +116,7 @@ Package {
     Rectangle { Package.name: 'detail'
         id: detailDelegate
         width: root.width; height: root.height
+        color: "#f0f1f2"
         MouseArea {
             anchors.fill: detailDelegate
             onClicked: {
@@ -141,7 +142,7 @@ Package {
 
         Rectangle {
             id: contactNameText
-            //width: root.width
+            width: root.width - 30
             height: 16
             anchors.left: contactAvatar.right
             Text {
