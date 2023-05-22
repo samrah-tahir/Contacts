@@ -5,147 +5,161 @@ import QtQml.Models
 Package {
     id: contactsPackage
 
-    Item { Package.name: 'list'
+    Rectangle { Package.name: 'list'
         id: listDelegate
         width: root.width; height: 40
-    }
-    Item { Package.name: 'detail'
-        id: detailDelegate
-        width: root.width - 20; height: root.height
-    }
-//=====================================================
-    Rectangle {
-        id: contact
-        width: root.width; height: 40
-        Item {
-            id: itemCon
-
-            Row{
-                spacing: 5
-                padding: 5
-                Rectangle {
-                    width: 30
-                    height: 30
-                    color:  "grey"
-                    radius: 50
-
-                    Text {
-                        text: contactName.charAt(0)
-                        anchors.centerIn: parent
-                        color: "white"
-                    }
-                }
-
-                Text {
-                    id: contactNameText
-                    text: contactName
-                }
-            }
-
-        }
-
+        color: "white"
         MouseArea {
-            anchors.fill: contact
+            anchors.fill: listDelegate
             drag {
-                target: contact
+                target: listDelegate
                 axis: Drag.XAxis
                 minimumX: -292
                 maximumX: 0
             }
 
             onPositionChanged: if(drag.active) {
-                                   if(contact.x == -292){
+                                   if(listDelegate.x == -292){
                                       contactmodel.removeRows(index, 1);
                                     }
                                }
 
             onClicked: {
                             detailDelegate.ListView.view.currentIndex = index;
-
                             if (root.state == 'inList') {
                                 root.state = 'inDetail'
                                 drag.target = null
                             } else {
                                 root.state = 'inList'
-                                drag.target = contact
+                                drag.target = listDelegate
                             }
                     }
             }
+        states: [
+            State {
+                name: 'inList'; when: root.state == 'inList' || root.state == ''
+                ParentChange { target: contactAvatar; parent: listDelegate}
+                ParentChange {target: contactNameText; parent: listDelegate}
+                ParentChange {target: contactNumberLabel; parent: listDelegate}
+            },
+            State {
+                name: 'inDetail'; when: root.state == 'inDetail'
+                ParentChange {
+                    target: contactNumberLabel; parent: detailDelegate
+                    width: parent.width
+                    height:  40
+                }
 
-    Rectangle {
-        id: detailsCardView
-        width: detailDelegate.ListView.view.width; height:root.height
-        visible: false
-        color: "#f7f8fa"
-        y: -4
+                ParentChange {
+                    target: contactNameText; parent: detailDelegate
+                    width: parent.width
+                    height:  40
+                }
+                ParentChange {
+                    target: contactAvatar; parent: detailDelegate
+                    width: parent.width
+                    height:  250
+                }
 
-        Rectangle {
-            id: backBtn
-            width: 40
-            height: 20
-            border.color: "black"
-            anchors.left: parent.left
-            y: 5
-            Text {text: "Back"; anchors.centerIn: parent}
-        }
-
-        Column {
-            anchors {centerIn: parent; margins: 20}
-            spacing: 10
-            Rectangle {
-                id: avatar
-                y: 0
-                width: 350
-                height: 250
-                color: "#dcdee0"
+                PropertyChanges {
+                    target: contactAvatar
+                    width: parent.width
+                    height:  150
+                    radius: 0
+                    x: 0; y:0
+                }
+                PropertyChanges {
+                    target: contactNameText
+                    width: parent.width
+                    height: 40
+                    x: 0; y: 150
+                    color: "#f0f1f2"
+                }
+                PropertyChanges {
+                    target: contactNumberLabel
+                    anchors.topMargin: 20
+                    width: parent.width
+                    height: 40
+                    x: 0; y: 210
+                    color: "#f0f1f2"
+                }
+                AnchorChanges {
+                    target: contactNameText
+                    anchors.top: contactAvatar.bottom
+                    anchors.left: parent.left
+                }
+                AnchorChanges {
+                    target: contactNumberLabel
+                    anchors.top: contactNameText.bottom
+                    anchors.left: parent.left
+                }
 
             }
 
-            Rectangle {
-                id: detailName
-                color: "white"
-                width: 350; height: 40
-                Text { text: contactName}
-            }
+        ]
 
-            Rectangle{
-                id: detailNumber
-                color: "white"
-                width: 350; height: 40
-                Text { text: contactNumber}
-            }
-        }
-    }
-
-    states: [
-        State {
-            name: 'inList'; when: root.state == 'inList' || root.state == ''
-            ParentChange { target: contact; parent: listDelegate}
-        },
-        State {
-            name: 'inDetail'; when: root.state == 'inDetail'
-            ParentChange {
-                target: contact; parent: detailDelegate
-                width: detailDelegate.ListView.view.width; height: detailDelegate.height
-                x: 0; y: 0
-            }
-            PropertyChanges {target: detailsCardView; visible: true}
-        }
-    ]
-
-    transitions: [
-                Transition {
-                    from: 'inList'; to: 'inDetail'
-                    ParentAnimation {
-                        NumberAnimation {
-                            properties: 'y'
-                            to: 0
-                            duration: 200
-                           // easing.type: Easing.InQuart
+        transitions: [
+                    Transition {
+                        from: 'inList'; to: 'inDetail'
+                        ParentAnimation {
+                            NumberAnimation {
+                                properties: 'x,y,width,height,opacity'
+                                //from: 0
+                                duration: 200
+                                easing.type: Easing.OutQuart
+                            }
                         }
                     }
-                }
-            ]
+                ]
+
+    }
+    Rectangle { Package.name: 'detail'
+        id: detailDelegate
+        width: root.width; height: root.height
+        MouseArea {
+            anchors.fill: detailDelegate
+            onClicked: {
+                        detailDelegate.ListView.view.currentIndex = index;
+                        root.state = 'inList'
+                    }
+            }
+    }
+//================================================================================
+
+        Rectangle {
+            id: contactAvatar
+            width: 30
+            height: 30
+            color:  "grey"
+            radius: 50
+            Text {
+                text: contactName.charAt(0)
+                anchors.centerIn: parent
+                color: "white"
+            }
+        }
+
+        Rectangle {
+            id: contactNameText
+            //width: root.width
+            height: 16
+            anchors.left: contactAvatar.right
+            Text {
+                text: contactName
+            }
+        }
+
+        Rectangle {
+            id: contactNumberLabel
+            width: root.width - 30
+            height: 16
+            anchors {top: contactNameText.bottom; left: contactAvatar.right}
+            Text {
+                text: contactNumber
+                font.pointSize: 12
+            }
+        }
 }
-}
+
+
 

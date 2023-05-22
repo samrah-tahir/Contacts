@@ -27,7 +27,7 @@ Window {
 
         ListView {
                 id: contactListView
-                anchors {fill: root; margins: 20}
+                anchors {fill: root}
                 spacing: 5
                 clip: true
                 model: contactsDelegateModel.parts.list
