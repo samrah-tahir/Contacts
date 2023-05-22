@@ -26,15 +26,15 @@ Package {
                                }
 
             onClicked: {
-                            detailDelegate.ListView.view.currentIndex = index;
-                            if (root.state == 'inList') {
-                                root.state = 'inDetail'
-                                drag.target = null
-                            } else {
-                                root.state = 'inList'
-                                drag.target = listDelegate
-                            }
-                    }
+                        detailDelegate.ListView.view.currentIndex = index;
+                        if (root.state == 'inList') {
+                            root.state = 'inDetail'
+                            drag.target = null
+                        } else {
+                            root.state = 'inList'
+                            drag.target = listDelegate
+                        }
+                }
             }
         states: [
             State {
@@ -45,30 +45,16 @@ Package {
             },
             State {
                 name: 'inDetail'; when: root.state == 'inDetail'
+                ParentChange {target: contactNumberLabel; parent: detailDelegate; width: parent.width; height: 40}
+                ParentChange {target: contactNameText; parent: detailDelegate; width: parent.width;height:  40}
+                ParentChange {target: contactAvatar; parent: detailDelegate; width: parent.width; height:  250}
 
                 PropertyChanges {target: backBtn; visible: true}
-                ParentChange {target: contactNumberLabel; parent: detailDelegate; width: parent.width; height: 40}
-                ParentChange {
-                    target: contactNameText; parent: detailDelegate; width: parent.width;height:  40
-                }
-                ParentChange {
-                    target: contactAvatar; parent: detailDelegate; width: parent.width; height:  250
-                }
-                PropertyChanges {
-                    target: contactAvatar; width: parent.width; height: 140; radius: 0; x: 0; y:0
-                }
-                PropertyChanges {
-                    target: contactNameText; width: parent.width;height: 40; x:0; y: 140; color: "white"
-                }
-                PropertyChanges {
-                    target: contactNumberLabel; anchors.topMargin: 20;width: parent.width; height: 40; x:0;y: 200; color: "white"
-                }
-                AnchorChanges {
-                    target: contactNameText; anchors.top: contactAvatar.bottom; anchors.left: parent.left
-                }
-                AnchorChanges {
-                    target: contactNumberLabel; anchors.top: contactNameText.bottom; anchors.left: parent.left
-                }
+                PropertyChanges {target: contactAvatar; width: parent.width; height: 140; radius: 0; x: 0; y:0}
+                PropertyChanges {target: contactNameText; width: parent.width;height: 40; x:0; y: 140; color: "white"}
+                PropertyChanges {target: contactNumberLabel; anchors.topMargin: 20;width: parent.width; height: 40; x:0;y: 200; color: "white"}
+                AnchorChanges {target: contactNameText; anchors.top: contactAvatar.bottom; anchors.left: parent.left}
+                AnchorChanges {target: contactNumberLabel; anchors.top: contactNameText.bottom; anchors.left: parent.left}
             }
 
         ]
