@@ -22,6 +22,7 @@ Package {
                                    if(listDelegate.x == -292){
                                       contactmodel.removeRows(index, 1);
                                     }
+
                                }
 
             onClicked: {
@@ -44,56 +45,30 @@ Package {
             },
             State {
                 name: 'inDetail'; when: root.state == 'inDetail'
-                ParentChange {
-                    target: contactNumberLabel; parent: detailDelegate
-                    width: parent.width
-                    height:  40
-                }
 
+                PropertyChanges {target: backBtn; visible: true}
+                ParentChange {target: contactNumberLabel; parent: detailDelegate; width: parent.width; height: 40}
                 ParentChange {
-                    target: contactNameText; parent: detailDelegate
-                    width: parent.width
-                    height:  40
+                    target: contactNameText; parent: detailDelegate; width: parent.width;height:  40
                 }
                 ParentChange {
-                    target: contactAvatar; parent: detailDelegate
-                    width: parent.width
-                    height:  250
-                }
-
-                PropertyChanges {
-                    target: contactAvatar
-                    width: parent.width
-                    height: 140
-                    radius: 0
-                    x: 0; y:0
+                    target: contactAvatar; parent: detailDelegate; width: parent.width; height:  250
                 }
                 PropertyChanges {
-                    target: contactNameText
-                    width: parent.width
-                    height: 40
-                    x:0;y: 150
-                    color: "white"
+                    target: contactAvatar; width: parent.width; height: 140; radius: 0; x: 0; y:0
                 }
                 PropertyChanges {
-                    target: contactNumberLabel
-                    anchors.topMargin: 20
-                    width: parent.width
-                    height: 40
-                    x:0;y: 210
-                    color: "white"
+                    target: contactNameText; width: parent.width;height: 40; x:0; y: 140; color: "white"
+                }
+                PropertyChanges {
+                    target: contactNumberLabel; anchors.topMargin: 20;width: parent.width; height: 40; x:0;y: 200; color: "white"
                 }
                 AnchorChanges {
-                    target: contactNameText
-                    anchors.top: contactAvatar.bottom
-                    anchors.left: parent.left
+                    target: contactNameText; anchors.top: contactAvatar.bottom; anchors.left: parent.left
                 }
                 AnchorChanges {
-                    target: contactNumberLabel
-                    anchors.top: contactNameText.bottom
-                    anchors.left: parent.left
+                    target: contactNumberLabel; anchors.top: contactNameText.bottom; anchors.left: parent.left
                 }
-
             }
 
         ]
@@ -104,8 +79,7 @@ Package {
                         ParentAnimation {
                             NumberAnimation {
                                 properties: 'x,y,width,height,opacity'
-                                //from: 0
-                                duration: 200
+                                duration: 300
                                 easing.type: Easing.OutQuart
                             }
                         }
@@ -117,13 +91,6 @@ Package {
         id: detailDelegate
         width: root.width; height: root.height
         color: "#f0f1f2"
-        MouseArea {
-            anchors.fill: detailDelegate
-            onClicked: {
-                        detailDelegate.ListView.view.currentIndex = index;
-                        root.state = 'inList'
-                    }
-            }
     }
 //================================================================================
 
@@ -133,11 +100,30 @@ Package {
             height: 30
             color:  "grey"
             radius: 50
+            Rectangle{
+                id: backBtn
+                width: 80
+                height: 20
+                Text {
+                    y: 0; x: 0
+                    text: "<< BACK"
+                    color: "black"
+                }
+                visible: false
+                MouseArea {
+                    anchors.fill: backBtn
+                    onClicked: {
+                                detailDelegate.ListView.view.currentIndex = index;
+                                root.state = 'inList'
+                            }
+                    }
+            }
             Text {
                 text: contactName.charAt(0)
                 anchors.centerIn: parent
                 color: "white"
             }
+
         }
 
         Rectangle {
@@ -145,9 +131,7 @@ Package {
             width: root.width - 30
             height: 16
             anchors.left: contactAvatar.right
-            Text {
-                text: contactName
-            }
+            Text {text: contactName}
         }
 
         Rectangle {
