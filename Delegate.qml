@@ -53,19 +53,20 @@ Package {
                 PropertyChanges {target: contactAvatar; radius: 0}
                 PropertyChanges {target: contactNameText;  color: "white"}
                 PropertyChanges {target: contactNumberLabel; anchors.topMargin: 20; color: "white"}
+
                 AnchorChanges {target: contactNameText; anchors.top: contactAvatar.bottom; anchors.left: parent.left}
                 AnchorChanges {target: contactNumberLabel; anchors.top: contactNameText.bottom; anchors.left: parent.left}
             }
         ]
 
-        transitions: [
+        transitions:
                     Transition {
                         from: 'inList'; to: 'inDetail'
                         ParentAnimation {
-                            NumberAnimation {properties: 'x,y,width,height,opacity'; duration: 300; easing.type: Easing.OutQuart}
+                            NumberAnimation {properties: 'x,y,width,height,opacity'; duration: 3000; easing.type: Easing.OutQuart}
                         }
                     }
-                ]
+
 
     }
     Rectangle { Package.name: 'detail'
