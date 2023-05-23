@@ -59,11 +59,10 @@ Package {
             }
         ]
 
-        transitions:
-                    Transition {
+        transitions: Transition {
                         from: 'inList'; to: 'inDetail'
                         ParentAnimation {
-                            NumberAnimation {properties: 'x,y,width,height,opacity'; duration: 3000; easing.type: Easing.OutQuart}
+                            NumberAnimation {properties: 'x,y,width,height,opacity'; duration: 300; easing.type: Easing.OutQuart}
                         }
                     }
 

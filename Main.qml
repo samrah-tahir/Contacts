@@ -32,6 +32,7 @@ Window {
                 clip: true
                 model: contactsDelegateModel.parts.list
                 interactive: true
+                visible: true
                 header: Rectangle {
                     width: root.width; height: 30
                     Text {
@@ -70,20 +71,15 @@ Window {
             onCurrentIndexChanged: {
                     detailView.positionViewAtIndex(currentIndex, ListView.Contain)
             }
+            visible: false
         }
 
         state: "inList"
-        states: [
-            State {
-                name: 'inList'
-                PropertyChanges { target: contactListView; interactive: true; visible: true }
-                PropertyChanges { target: detailView; visible: false }
-            },
-            State {
-                name: 'inDetail'; extend: 'inList'
+        states: State {
+                name: 'inDetail';  when: root.state == 'inDetail'
                 PropertyChanges { target: contactListView; interactive: false; visible: false }
                 PropertyChanges { target: detailView;  visible: true }
             }
-        ]
+
     }
 }
